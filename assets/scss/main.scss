@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer base {
+
+    :root {
+        --highlight-text: #06b6d4;
+        --default-text: #6b7280
+        --bold-text: #111827;
+        --bg-color: #f3f4f6;
+        --green: #2dd4bf;
+        --red: #F23DA0;
+    }
+
+    :root[class~="dark"] {
+        --highlight-text: #67e8f9;
+        --default-text: #e5e7eb;
+        --bold-text: #fff;
+        --bg-color: #111827;
+        --green: #75e756;
+        // --red: #FF81D0;
+        --red: #ef3652;
+    }
+}
