@@ -7,20 +7,30 @@
 
     :root {
         --highlight-text: #06b6d4;
-        --default-text: #6b7280
-        --bold-text: #111827;
+        --default-text: #575D6E;
+        --bold-text: #313a59;
+        --muted-text: #6b7280;
         --bg-color: #f3f4f6;
-        --green: #2dd4bf;
+        --green: #00A36C;
         --red: #F23DA0;
+        --border-color: #e2e8f0;
     }
 
     :root[class~="dark"] {
         --highlight-text: #67e8f9;
-        --default-text: #e5e7eb;
+        --default-text: #d1d8ee;
         --bold-text: #fff;
+        --muted-text: #cadaf0;
         --bg-color: #111827;
-        --green: #75e756;
-        // --red: #FF81D0;
+        --green: #4ade80;
         --red: #ef3652;
+        --border-color: #475569;
     }
+}
+
+.show{
+    opacity:1;
+}
+.hide{
+    opacity:0;
 }
