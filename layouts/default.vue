@@ -24,8 +24,7 @@ useHead({
 <style>
 body{
     font-family: 'Inter', sans-serif;
-    margin-top: 2rem;
-    margin-bottom: 2rem;
+   margin: 2rem;
 }
 body{
     @apply bg-bg-color text-default-text;

@@ -1,20 +1,9 @@
 module.exports = {
     content: [
-        "content/**/*.md",
-        "components/**/*.{vue,js,ts}",
-        "layouts/**/*.vue",
-        "pages/**/*.vue",
-        "App.{js,ts,vue}",
-        "app.{js,ts,vue}",
-        "Error.{js,ts,vue}",
-        "error.{js,ts,vue}",
-        "content/**/*.md",
+        './src/**/*.{vue,js,ts,jsx,tsx}', 
       ],
     darkMode: "selector",
-    safelist: [
-        'text-red',
-        'text-green'
-    ],
+ 
 
     theme: {
         extend: {
@@ -22,9 +11,12 @@ module.exports = {
                 'default-text': "var(--default-text)",
                 'bg-color': "var(--bg-color)",
                 'highlight-text': "var(--highlight-text)",
-                'bold-text': "var(--bold-text)",    
-                red: "var(--red)",
-                green: "var(--green)",
+                'bold-text': "var(--bold-text)",  
+                'muted-text': "var(--muted-text)",
+                'highlight-red': "var(--red)",
+                'highlight-green': "var(--green)",  
+                "border-color": "var(--border-color)",
+              
 
 
             }
