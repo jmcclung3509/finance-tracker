@@ -18,7 +18,13 @@
           />
         </div>
       </template>
-      <UForm :state="state"  :schema="schema" ref="form"  @submit.prevent = "save" class="p-4">
+      <UForm
+        :state="state"
+        :schema="schema"
+        ref="form"
+        @submit.prevent="save"
+        class="p-4"
+      >
         <!-- name same as the column name in the database -->
         <UFormGroup
           label="Transaction Type"
@@ -77,7 +83,14 @@
           />
         </UFormGroup>
       </UForm>
-      <UButton type="submit" color="green" class="w-fit" label="Save" />
+      <UButton
+      @click="save"
+        type="submit"
+        color="green"
+        class="w-fit"
+        label="Save"
+        :loading="isLoading"
+      />
     </UCard>
   </UModal>
 </template>
@@ -90,11 +103,15 @@ const props = defineProps({
   modalValue: Boolean,
 });
 
+const emit = defineEmits(["update:modalValue", "closeModal", "saved"]);
+
 const data = reactive({
   isOpen: false,
 });
-
+const supabase = useSupabaseClient();
+const toast = useToast();
 const form = ref();
+const isLoading = ref(false);
 
 const initialState = {
   type: "Income",
@@ -103,17 +120,42 @@ const initialState = {
   description: undefined,
   category: undefined,
 };
-const state = ref({ ...initialState})
+const state = ref({ ...initialState });
 
-const resetState = ()=>{
-  Object.assign(state.value, initialState)
-form.value.clear()
-}
+const resetState = () => {
+  Object.assign(state.value, initialState);
+  form.value.clear();
+};
 
-const save = async () =>{
-if (form.value.errors.length) return;
-//store into SupaBase
-}
+const save = async () => {
+  if (form.value.errors.length) return;
+  isLoading.value = true;
+  //store into SupaBase
+  try {
+    const { error } = await supabase
+      .from("transactions")
+      .upsert({ ...state.value });
+    if (!error) {
+      toast.add({
+        title: "Transaction added",
+        icon: "i-heroicons-check-circle",
+      });
+      isOpen.value = false;
+      emit("saved");
+      return;
+    }
+    throw error
+  } catch (e) {
+    toast.add({
+      title: "Transaction not saved",
+      description: "An error occurred while saving the transaction",
+      icon: "i-heroicons-exclamation-circle",
+      color: "red",
+    });
+  } finally {
+    isLoading.value = false;
+  }
+};
 
 const defaultSchema = z.object({
   amount: z.number().positive("Needs to be a positive number"),
@@ -122,40 +164,39 @@ const defaultSchema = z.object({
 });
 
 const incomeSchema = z.object({
-    type: z.literal('Income'),
-})
+  type: z.literal("Income"),
+});
 
 const expenseSchema = z.object({
-    type: z.literal('Expense'),
-    category: z.enum(categories)
-})
+  type: z.literal("Expense"),
+  category: z.enum(categories),
+});
 
 const savingsSchema = z.object({
-    type: z.literal('Savings'),
-})
+  type: z.literal("Savings"),
+});
 
 const investmentSchema = z.object({
-    type: z.literal('Investment'),
-})
+  type: z.literal("Investment"),
+});
 
 const schema = z.intersection(
-    z.discriminatedUnion('type', [incomeSchema, expenseSchema, savingsSchema, investmentSchema]),
-    defaultSchema
-)
-
-
-
-
-const emit = defineEmits(["update:modalValue", "closeModal"]);
+  z.discriminatedUnion("type", [
+    incomeSchema,
+    expenseSchema,
+    savingsSchema,
+    investmentSchema,
+  ]),
+  defaultSchema
+);
 
 const isOpen = computed({
   get: () => props.modalValue,
   set: (value) => {
     if (!value) resetState();
     emit("update:modalValue", value);
-  }
+  },
 });
-
 
 const closeModal = () => {
   data.isOpen = false;
