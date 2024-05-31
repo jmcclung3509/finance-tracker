@@ -7,12 +7,23 @@
 
     :root {
         --highlight-text: #06b6d4;
-        --default-text: #575D6E;
+        --default-text: #374151;
         --bold-text: #313a59;
         --muted-text: #6b7280;
-        --bg-color: #f3f4f6;
+        --bg-color: #f9fafb;
         --green: #00A36C;
-        --red: #F23DA0;
+        // --red: #F23DA0;
+        --blue: #47C4F1;
+        --purple: #C18DF7;
+        // --green: #6ECB63 
+        // --green: #4ade80;
+        // --red: #FF4F4F;
+        --red: #FF5C5C;
+        --blue:#41729F ; 
+        // --blue: #47C4F1;
+        --purple:  #7D3C98 ;
+        // --purple: #C18DF7;
+    
         --border-color: #e2e8f0;
     }
 
@@ -22,8 +33,15 @@
         --bold-text: #fff;
         --muted-text: #cadaf0;
         --bg-color: #111827;
-        --green: #4ade80;
-        --red: #ef3652;
+        --green: #6ECB63 ;
+        // --green: #4ade80;
+        // --red: #FF4F4F;
+        --red: #FF5C5C;
+        --blue:#5DADE2 ;
+        // --blue: #47C4F1;
+        --purple:  #AF7AC5;
+        // --purple: #C18DF7;
+        --yellow: #E1FC61;
         --border-color: #475569;
     }
 }
