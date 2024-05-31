@@ -11,6 +11,7 @@
     "seed": "node seed.mjs"
   },
   "dependencies": {
+    "@mdi/js": "^7.4.47",
     "@nuxt/ui": "^2.16.0",
     "@nuxtjs/supabase": "^1.2.2",
     "date-fns": "^3.6.0",
@@ -22,6 +23,7 @@
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
     "@nuxtjs/color-mode": "^3.4.1",
+    "nuxt-icon": "^0.6.10",
     "sass": "^1.77.1"
   }
 }

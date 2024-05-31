@@ -7,6 +7,7 @@
         v-model="selectedCurrency"
         :options="currencyOptions"
         @change="handleCurrencyChange"
+    
       />
     </div>
   </section>
@@ -17,30 +18,38 @@
       color="green"
       title="Income"
       :amount="incomeTotal"
-      :lastAmount="5000"
+      :lastAmount="prevIncomeTotal"
       :loading="isPending"
+     :currencyType="data.currencyType"
+    
     />
     <Trend
       color="red"
       title="expense"
       :amount="expenseTotal"
-      :lastAmount="1000"
+      :lastAmount="prevExpenseTotal"
       :loading="isPending"
+      :currencyType="data.currencyType"
+  
     />
     <Trend
-      color="green"
-      title="Income"
-      :amount="4000"
-      :lastAmount="4000"
+      color="blue"
+      title="Investments"
+      :amount="investmentTotal"
+      :lastAmount="prevInvestmentTotal"
       :loading="isPending"
+      :currencyType="data.currencyType"
+     
     />
     <Trend
-      color="red"
-      title="Income"
-      :amount="4000"
-      :lastAmount="5000"
+      color="purple"
+      title="Savings"
+      :amount="savingsTotal"
+      :lastAmount="prevSavingsTotal"
       :loading="isPending"
-    />
+      :currencyType="data.currencyType"
+
+      />
   </section>
 
   <section class="flex justify-between mb-10">
@@ -58,6 +67,7 @@
         v-model="isOpen"
         @closeModal="isOpen = false"
         @saved="refreshTransactions"
+      
       />
       <UButton
         icon="i-heroicons-plus-circle"
@@ -74,12 +84,15 @@
       :key="date"
       class="mb-10"
     >
-      <DailyTransactions :date="date" :transactions="transactionsByDay" />
+      <DailyTransactions :date="date" :transactions="transactionsByDay" >{{transactions}}</DailyTransactions>
       <Transaction
         v-for="transaction in transactionsByDay"
         :key="transaction.id"
         :transaction="transaction"
         @deleted="refreshTransactions()"
+        @updated="refreshTransactions()"
+        :currencyType="data.currencyType"
+        
       />
     </div>
   </section>
@@ -94,25 +107,37 @@
 import { transactionViewOptions } from '~/constants';
 import { currencyOptions } from '~/constants';
 
-const selectedView = ref(transactionViewOptions[0]);
-const selectedCurrency = ref(currencyOptions[0]);
-
-const dates = useSelectedTimePeriod(selectedView)
-console.log(dates, 'dates')
-
-const { isPending,  refreshTransactions, transactions: {incomeCount, expenseCount, incomeTotal, expenseTotal, grouped:{byDate}
-}} = useFetchTransactions();
-
-await refreshTransactions()
-
-
-
+const emit = defineEmits(["currencyChanged"]);
 
 const isOpen = ref(false)
+const selectedView = ref(transactionViewOptions[0]);
+const selectedCurrency = ref(currencyOptions[0]);
+const data = reactive({
+  currencyType: selectedCurrency.value,
+});
+
+const {current, previous} = useSelectedTimePeriod(selectedView)
+
+
+const { isPending,  refreshTransactions, transactions: {incomeCount, expenseCount, investmentCount, savingsCount, incomeTotal, expenseTotal, investmentTotal, savingsTotal, grouped:{ byDate }
+}} = useFetchTransactions(current);
+
+
+
+const {  transactions: { incomeTotal:prevIncomeTotal, expenseTotal:prevExpenseTotal,  investmentTotal:prevInvestmentTotal, savingsTotal:prevSavingsTotal
+}} = useFetchTransactions(previous);
+
 
 
 
 const handleCurrencyChange = ()=>{
     data.currencyType=selectedCurrency.value;
+    emit('currencyChanged', data.currencyType);
+
 }
+watch(()=>selectedCurrency, ()=>{
+    data.currencyType=selectedCurrency.value;
+    emit('currencyChanged', data.currencyType);
+})
+
 </script>

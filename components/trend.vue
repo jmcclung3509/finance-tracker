@@ -46,7 +46,15 @@ const props = defineProps({
 });
 
 
-let {currency}  = useCurrency(props.amount, props.currencyType);
+
+const currency = computed(() => {
+    return new Intl.NumberFormat("en-In", {
+      style: "currency",
+      currency: props.currencyType || "USD",
+    }).format(isRef(props.amount) ? props.amount.value : props.amount);
+  });
+
+
 
 
 const trendingUp = computed(() => {
@@ -89,5 +97,12 @@ const percent = computed(() => {
 }
 .red {
   @apply text-highlight-red;
+}
+.blue{
+  @apply text-highlight-blue;
+
+}
+.purple{
+  @apply text-highlight-purple;
 }
 </style>

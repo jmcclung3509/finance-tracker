@@ -1,9 +1,10 @@
-export const useFetchTransactions = () => {
+export const useFetchTransactions = (period) => {
   const transactions = ref([]);
   const isPending = ref(false);
   const supabase = useSupabaseClient();
 
   const income = computed(() => {
+    if (!transactions.value.length) return [];
     return transactions.value.filter((t) => t.type.toLowerCase() === "income");
   });
 
@@ -11,9 +12,21 @@ export const useFetchTransactions = () => {
     if (!transactions.value.length) return [];
     return transactions.value.filter((t) => t.type.toLowerCase() === "expense");
   });
+  const investment = computed(() => {
+    if (!transactions.value.length) return [];
+    return transactions.value.filter((t) => t.type.toLowerCase() === "investment");
+  });
+
+  const savings= computed(() => {
+    if (!transactions.value.length) return [];
+    return transactions.value.filter((t) => t.type.toLowerCase() === "savings");
+  });
+
 
   const incomeCount = computed(() => income.value.length);
   const expenseCount = computed(() => expense.value.length);
+  const investmentCount = computed(() => investment.value.length);
+  const savingsCount = computed(() => savings.value.length);
 
   const incomeTotal = computed(() => {
     return income.value.reduce(
@@ -29,18 +42,39 @@ export const useFetchTransactions = () => {
     );
   });
 
+  const investmentTotal = computed(() => {
+    return investment.value.reduce(
+      (sum, transaction) => sum + transaction.amount,
+      0
+    );
+  });
+
+  const savingsTotal = computed(() => {
+    return savings.value.reduce(
+      (sum, transaction) => sum + transaction.amount,
+      0
+    );
+  });
+
+
   const fetchTransactions = async () => {
     isPending.value = true;
     try {
-      const { data, error } = await supabase
-        .from("transactions")
-        .select()
-        .order("created_at", { ascending: false });
-      if (error) return [];
+      const { data } = await useAsyncData(
+        `transactions-${period.value.from.toDateString()}-${period.value.to.toDateString()}`,
+        async () => {
+          const { data, error } = await supabase
+            .from("transactions")
+            .select()
+            .gte("created_at", period.value.from.toISOString())
+            .lte("created_at", period.value.to.toISOString())
+            .order("created_at", { ascending: false });
+          if (error) return [];
 
-      return (transactions.value = data);
-    } catch (error) {
-      console.error(error);
+          return data;
+        }
+      );
+      return data.value;
     } finally {
       isPending.value = false;
     }
@@ -49,6 +83,8 @@ export const useFetchTransactions = () => {
   const refreshTransactions = async () => {
     return (transactions.value = await fetchTransactions());
   };
+
+  watch(period, async () => await refreshTransactions(), { immediate: true });
 
   const transactionsGroupedByDate = computed(() => {
     let grouped = {};
@@ -88,10 +124,16 @@ export const useFetchTransactions = () => {
       },
       income,
       expense,
+      investment,
+      savings,
       incomeTotal,
       expenseTotal,
+      investmentTotal,
+      savingsTotal,
       incomeCount,
       expenseCount,
+      investmentCount,
+      savingsCount,
     },
     refreshTransactions,
     isPending,

@@ -3,11 +3,12 @@
     class="border-b border-border-color py-2 text-default-text grid grid-cols-3"
   >
     <div class="flex justify-between items-center gap-14 col-span-2">
-      <div class="flex justify-start space-x-1 items-center">
-        <UIcon :name="icon" class="icon text-lg" :class="[iconColor]" />
+      <div class="flex justify-start space-x-2 items-center">
+     
+        <Icon :name="icon" class="icon text-2xl" :class="[iconColor]" />
         <div>{{ props.transaction.description }}</div>
       </div>
-      <div >
+      <div>
         <UBadge
           v-show="
             props.transaction.category && props.transaction.category !== ''
@@ -15,8 +16,14 @@
           color="white"
           >{{ props.transaction.category }}</UBadge
         >
-      </div>
+      </div>{{ props.transaction.type }}
     </div>
+    <TransactionUpdateModal
+      :transaction="props.transaction"
+      v-model="updateModalIsOpen"
+      @closeModal="updateModalIsOpen = false"
+      @updated="updated"
+    />
 
     <div class="flex justify-end space-x-2 items-center">
       <div>{{ currency }}</div>
@@ -37,12 +44,14 @@
 <script setup>
 const toast = useToast();
 const supabase = useSupabaseClient();
+const updateModalIsOpen = ref(false);
 
 const props = defineProps({
   transaction: Object,
-});
+  currencyType: String,
+})
 
-const emit = defineEmits(["deleted"]);
+const emit = defineEmits(["deleted", "updated"]);
 const isLoading = ref(false);
 
 const deleteTransaction = async () => {
@@ -69,22 +78,33 @@ const deleteTransaction = async () => {
     isLoading.value = false;
   }
 };
+
+const selectedTransactionId = ref(null);
+
+
+
+const openUpdateModal = (transactionId) => {
+  console.log(transactionId);
+  selectedTransactionId.value = transactionId;
+  updateModalIsOpen.value = true;
+};
+const updated = () => {
+  emit("updated");
+  updateModalIsOpen.value = false;
+ 
+};
+
 const items = [
   [
     {
       label: "Edit",
       icon: "i-heroicons-pencil-square-20-solid",
-      click: () => console.log("Edit"),
+      click: () => openUpdateModal(props.transaction.id),
     },
     {
       label: "Delete",
       icon: "i-heroicons-trash-20-solid",
       click: () => deleteTransaction(),
-    },
-    {
-      label: "Add",
-      icon: "i-heroicons-plus-20-solid",
-      click: () => console.log("Add"),
     },
   ],
 ];
@@ -92,15 +112,61 @@ const items = [
 const isIncome = computed(() => {
   return props.transaction.type.toLowerCase() === "income";
 });
+const isExpense = computed(() => {
+  return props.transaction.type.toLowerCase() === "expense";
+});
+const isInvestment = computed(() => {
+  return props.transaction.type.toLowerCase() === "investment";
+});
+const isSavings = computed(() => {
+  return props.transaction.type.toLowerCase() === "savings";
+});
+
+const transactionType = computed(() => {
+  if (isIncome.value) return "income";
+  if (isExpense.value) return "expense";
+  if (isInvestment.value) return "investment";
+  if (isSavings.value) return "savings";
+});
+
 
 const icon = computed(() => {
-  return isIncome.value
-    ? "i-heroicons-arrow-up-right"
-    : "i-heroicons-arrow-down-left";
+switch(transactionType.value){
+  case "income":
+    return "mdi:dollar";
+  case "expense":
+    return "mdi:credit-card";
+    case  "investment":
+    return "mdi:bank";
+    case "savings":
+    return "mdi:piggy-bank";
+  default:
+    return " ";
+}
 });
+console.log(icon.value);
 
 const iconColor = computed(() => {
-  return isIncome.value ? "text-highlight-green" : "text-highlight-red";
+
+  switch(transactionType.value){
+  case "income":
+    return "text-highlight-green";
+  case "expense":
+    return "text-highlight-red";
+    case  "investment":
+    return "text-highlight-blue";
+    case "savings":
+    return "text-highlight-purple";
+  default:
+    return " ";
+}
 });
-const { currency } = useCurrency(props.transaction.amount);
+
+const currency = computed(() => {
+    return new Intl.NumberFormat("en-In", {
+      style: "currency",
+      currency: props.currencyType || "USD",
+    }).format(isRef(props.transaction.amount) ? props.transaction.amount.value : props.transaction.amount);
+  });
+
 </script>
