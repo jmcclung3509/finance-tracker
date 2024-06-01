@@ -144,7 +144,7 @@ switch(transactionType.value){
     return " ";
 }
 });
-console.log(icon.value);
+
 
 const iconColor = computed(() => {
 
@@ -168,5 +168,7 @@ const currency = computed(() => {
       currency: props.currencyType || "USD",
     }).format(isRef(props.transaction.amount) ? props.transaction.amount.value : props.transaction.amount);
   });
+
+
 
 </script>
