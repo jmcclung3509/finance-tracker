@@ -1,4 +1,5 @@
 export const useFetchTransactions = (period) => {
+console.log(period)
   const transactions = ref([]);
   const isPending = ref(false);
   const supabase = useSupabaseClient();
@@ -23,10 +24,12 @@ export const useFetchTransactions = (period) => {
   });
 
 
+
   const incomeCount = computed(() => income.value.length);
   const expenseCount = computed(() => expense.value.length);
   const investmentCount = computed(() => investment.value.length);
   const savingsCount = computed(() => savings.value.length);
+
 
   const incomeTotal = computed(() => {
     return income.value.reduce(
@@ -84,7 +87,7 @@ export const useFetchTransactions = (period) => {
     return (transactions.value = await fetchTransactions());
   };
 
-  watch(period, async () => await refreshTransactions(), { immediate: true });
+  watch(period, async () => await refreshTransactions(), {immediate: true});
 
   const transactionsGroupedByDate = computed(() => {
     let grouped = {};

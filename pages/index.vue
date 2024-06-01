@@ -2,7 +2,10 @@
   <section class="flex justify-between items-center mb-10">
     <h1 class="text-2xl font-bold">Summary</h1>
     <div class="flex justify-content items-center gap-4">
-      <USelectMenu v-model="selectedView" :options="transactionViewOptions" />
+      <!-- <DateRangePicker  @update:selectedRange="handleDateRangeChange" /> -->
+      <USelectMenu v-model="selectedView" :options="transactionViewOptions"  />
+   
+  
       <USelectMenu
         v-model="selectedCurrency"
         :options="currencyOptions"
@@ -22,7 +25,7 @@
       :loading="isPending"
      :currencyType="data.currencyType"
     
-    />
+    />{{ currentValue }}
     <Trend
       color="red"
       title="expense"
@@ -112,14 +115,23 @@ const emit = defineEmits(["currencyChanged"]);
 const isOpen = ref(false)
 const selectedView = ref(transactionViewOptions[0]);
 const selectedCurrency = ref(currencyOptions[0]);
+
+
+
 const data = reactive({
   currencyType: selectedCurrency.value,
 });
 
+
+
+const selectedRange = ref({ start: null, end: null });
+
+
 const {current, previous} = useSelectedTimePeriod(selectedView)
 
 
-const { isPending,  refreshTransactions, transactions: {incomeCount, expenseCount, investmentCount, savingsCount, incomeTotal, expenseTotal, investmentTotal, savingsTotal, grouped:{ byDate }
+
+const { isPending,  refreshTransactions, transactions: {incomeCount, expenseCount,  incomeTotal, expenseTotal, investmentTotal, savingsTotal, grouped:{ byDate }
 }} = useFetchTransactions(current);
 
 
@@ -139,5 +151,24 @@ watch(()=>selectedCurrency, ()=>{
     data.currencyType=selectedCurrency.value;
     emit('currencyChanged', data.currencyType);
 })
+
+
+
+
+// const  handleDateRangeChange= (range) => {
+// selectedRange.value = range;
+// console.log(selectedRange.value.start, 'start')
+
+// };
+// const currentValue = computed(()=>{
+//   if(selectedRange.value.start !== null){
+//     return selectedRange.value
+//   }else{
+//     return current
+//   }
+  
+
+// })
+
 
 </script>
