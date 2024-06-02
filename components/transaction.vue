@@ -3,9 +3,9 @@
     class="border-b border-border-color py-2 text-default-text grid grid-cols-3"
   >
     <div class="flex justify-between items-center gap-14 col-span-2">
-      <div class="flex justify-start space-x-2 items-center">
+      <div class="flex justify-start space-x-4 items-center">
      
-        <Icon :name="icon" class="icon text-2xl" :class="[iconColor]" />
+        <Icon :name="icon" class="icon text-[24px] }" :class="[iconColor]" />
         <div>{{ props.transaction.description }}</div>
       </div>
       <div>
@@ -16,7 +16,7 @@
           color="white"
           >{{ props.transaction.category }}</UBadge
         >
-      </div>{{ props.transaction.type }}
+      </div>
     </div>
     <TransactionUpdateModal
       :transaction="props.transaction"

@@ -2,7 +2,7 @@
   <div
     class="grid grid-cols-2 border-b border-border-color py-2 text-muted-text"
   >
-    <div class="left flex justify-between items-center">{{ date }}</div>
+    <div class=" text-bold-text left flex justify-between items-center">{{ date }}</div>
 
     <div class="right flex justify-end items-center">{{ currency }}</div>
   </div>
