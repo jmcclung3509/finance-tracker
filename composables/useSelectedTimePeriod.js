@@ -14,7 +14,7 @@ import {
 
 
 export const useSelectedTimePeriod = (period) => {
-
+console.log(period.value,)
   const current = computed(() => {
     switch (period.value) {
       case "Yearly":
