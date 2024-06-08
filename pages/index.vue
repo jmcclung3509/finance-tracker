@@ -138,7 +138,9 @@ const {
   },
 } = useFetchTransactions(current);
 
+
 const {
+  refreshTransactions: refreshPreviousTransactions,
   transactions: {
     incomeTotal: prevIncomeTotal,
     expenseTotal: prevExpenseTotal,
@@ -146,6 +148,10 @@ const {
     savingsTotal: prevSavingsTotal,
   },
 } = useFetchTransactions(previous);
+
+
+await refreshTransactions();
+await refreshPreviousTransactions();
 
 const handleCurrencyChange = () => {
   data.currencyType = selectedCurrency.value;
@@ -174,5 +180,5 @@ const timePeriod = computed(() => {
   }
 
 });
-console.log(timePeriod.value);
+
 </script>
