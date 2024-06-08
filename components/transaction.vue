@@ -1,14 +1,15 @@
 <template>
   <div
-    class="border-b border-border-color py-2 text-default-text grid grid-cols-3"
+    class="border-b border-border-color py-2 text-default-text "
   >
-    <div class="flex justify-between items-center gap-14 col-span-2">
-      <div class="flex justify-start space-x-4 items-center">
-     
-        <Icon :name="icon" class="icon text-[24px] }" :class="[iconColor]" />
-        <div>{{ props.transaction.description }}</div>
-      </div>
-      <div>
+    <div class="flex justify-between items-center gap-14">
+      <div class="flex justify-between items-center w-3/4 "  >
+        <div class="flex items-center gap-4 justify-start w-3/4 ">
+          <Icon :name="icon" class="icon text-[24px] }" :class="[iconColor]" />
+          <p class="truncate" :class="{'showing': showMore}">{{ props.transaction.description }}
+            </p>
+            <UIcon :name="chevronIcon"  @click="showMore =!showMore"/>
+        </div>
         <UBadge
           v-show="
             props.transaction.category && props.transaction.category !== ''
@@ -17,7 +18,8 @@
           >{{ props.transaction.category }}</UBadge
         >
       </div>
-    </div>
+
+
     <TransactionUpdateModal
       :transaction="props.transaction"
       v-model="updateModalIsOpen"
@@ -25,7 +27,7 @@
       @updated="updated"
     />
 
-    <div class="flex justify-end space-x-2 items-center">
+    <div class="flex justify-end space-x-2 items-center w-fit">
       <div>{{ currency }}</div>
       <div>
         <UDropdown :items="items" :popper="{ placement: 'bottom-start' }">
@@ -39,17 +41,19 @@
       </div>
     </div>
   </div>
+  </div>  
 </template>
 
 <script setup>
 const toast = useToast();
 const supabase = useSupabaseClient();
 const updateModalIsOpen = ref(false);
+const showMore = ref(false);
 
 const props = defineProps({
   transaction: Object,
   currencyType: String,
-})
+});
 
 const emit = defineEmits(["deleted", "updated"]);
 const isLoading = ref(false);
@@ -81,8 +85,6 @@ const deleteTransaction = async () => {
 
 const selectedTransactionId = ref(null);
 
-
-
 const openUpdateModal = (transactionId) => {
   selectedTransactionId.value = transactionId;
   updateModalIsOpen.value = true;
@@ -90,7 +92,6 @@ const openUpdateModal = (transactionId) => {
 const updated = () => {
   emit("updated");
   updateModalIsOpen.value = false;
- 
 };
 
 const items = [
@@ -128,46 +129,59 @@ const transactionType = computed(() => {
   if (isSavings.value) return "savings";
 });
 
-
 const icon = computed(() => {
-switch(transactionType.value){
-  case "income":
-    return "mdi:dollar";
-  case "expense":
-    return "mdi:credit-card";
-    case  "investment":
-    return "mdi:bank";
+  switch (transactionType.value) {
+    case "income":
+      return "mdi:dollar";
+    case "expense":
+      return "mdi:credit-card";
+    case "investment":
+      return "mdi:bank";
     case "savings":
-    return "mdi:piggy-bank";
-  default:
-    return " ";
-}
+      return "mdi:piggy-bank";
+    default:
+      return " ";
+  }
 });
-
 
 const iconColor = computed(() => {
-
-  switch(transactionType.value){
-  case "income":
-    return "text-highlight-green";
-  case "expense":
-    return "text-highlight-red";
-    case  "investment":
-    return "text-highlight-blue";
+  switch (transactionType.value) {
+    case "income":
+      return "text-highlight-green";
+    case "expense":
+      return "text-highlight-red";
+    case "investment":
+      return "text-highlight-blue";
     case "savings":
-    return "text-highlight-purple";
-  default:
-    return " ";
-}
+      return "text-highlight-purple";
+    default:
+      return " ";
+  }
 });
 
+const chevronIcon = computed(()=>{
+  return showMore.value ? "i-heroicons-chevron-up-20-solid" : "i-heroicons-chevron-down-20-solid"
+})
+
 const currency = computed(() => {
-    return new Intl.NumberFormat("en-In", {
-      style: "currency",
-      currency: props.currencyType || "USD",
-    }).format(isRef(props.transaction.amount) ? props.transaction.amount.value : props.transaction.amount);
-  });
-
-
-
+  return new Intl.NumberFormat("en-In", {
+    style: "currency",
+    currency: props.currencyType || "USD",
+  }).format(
+    isRef(props.transaction.amount)
+      ? props.transaction.amount.value
+      : props.transaction.amount
+  );
+});
 </script>
+
+<style lang="scss" scoped>
+.showing {
+  overflow: visible;
+  max-width: 100%;
+  white-space: wrap;
+  z-index: 1000;
+  overflow: visible;
+
+}
+</style>
