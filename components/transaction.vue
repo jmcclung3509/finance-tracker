@@ -84,7 +84,6 @@ const selectedTransactionId = ref(null);
 
 
 const openUpdateModal = (transactionId) => {
-  console.log(transactionId);
   selectedTransactionId.value = transactionId;
   updateModalIsOpen.value = true;
 };

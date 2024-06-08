@@ -1,5 +1,4 @@
 export const useFetchTransactions = (period) => {
-console.log(period.value, 'period')
   const transactions = ref([]);
   const isPending = ref(false);
   const supabase = useSupabaseClient();
@@ -73,7 +72,6 @@ console.log(period.value, 'period')
             .lte("created_at", period.value.to.toISOString())
             .order("created_at", { ascending: false });
           if (error) return [];
-
           return data;
         }
       );
@@ -84,10 +82,10 @@ console.log(period.value, 'period')
   };
 
   const refreshTransactions = async () => {
-    return (transactions.value = await fetchTransactions());
+    transactions.value = await fetchTransactions();
   };
 
-  watch(period, async () => await refreshTransactions(), {immediate: true});
+  watch(period, async () => await refreshTransactions());
 
   const transactionsGroupedByDate = computed(() => {
     let grouped = {};
@@ -119,6 +117,7 @@ console.log(period.value, 'period')
     // return sortedGroup
     return grouped;
   });
+  
   return {
     transactions: {
       all: transactions,
