@@ -43,7 +43,7 @@
 </template>
 
 <script setup>
-const toast = useToast();
+const {toastError, toastSuccess} = useAppToast();
 const supabase = useSupabaseClient();
 const updateModalIsOpen = ref(false);
 const showMore = ref(false);
@@ -62,20 +62,17 @@ const deleteTransaction = async () => {
   isLoading.value = true;
   try {
     await supabase.from("transactions").delete().eq("id", props.transaction.id);
-    toast.add({
+    toastSuccess({
       title: "Transaction deleted",
       description: "Transaction has been deleted successfully",
-      icon: "i-heroicons-trash-20-solid",
-      color: "green",
     });
     emit("deleted", props.transaction.id);
   } catch (error) {
-    toast.add({
-      id: "transaction_deleted",
-      title: "Transaction deleted",
-      description: "Transaction has been deleted successfully",
-      icon: "i-heroicons-exclamation-circle",
-      color: "red",
+    toastError({
+
+      title: "Transaction was not deleted",
+      description: "There was an error deleting this transaction. Please try again.",
+ 
     });
     console.log(error);
   } finally {
@@ -121,12 +118,16 @@ const isInvestment = computed(() => {
 const isSavings = computed(() => {
   return props.transaction.type.toLowerCase() === "savings";
 });
+const isOther = computed(() => {
+  return props.transaction.type.toLowerCase() === "other";
+});
 
 const transactionType = computed(() => {
   if (isIncome.value) return "income";
   if (isExpense.value) return "expense";
   if (isInvestment.value) return "investment";
   if (isSavings.value) return "savings";
+  if (isOther.value) return "other";
 });
 
 const icon = computed(() => {
@@ -139,8 +140,10 @@ const icon = computed(() => {
       return "mdi:bank";
     case "savings":
       return "mdi:piggy-bank";
+      case "other":
+      return "mdi:ellipsis-horizontal-circle";
     default:
-      return " ";
+      return "null";
   }
 });
 
@@ -154,6 +157,8 @@ const iconColor = computed(() => {
       return "text-highlight-blue";
     case "savings":
       return "text-highlight-purple";
+      case "other":
+      return "text-highlight-other";
     default:
       return " ";
   }

@@ -84,7 +84,7 @@
         </UFormGroup>
       </UForm>
       <UButton
-      @click="save"
+        @click="save"
         type="submit"
         color="green"
         class="w-fit"
@@ -109,7 +109,7 @@ const data = reactive({
   isOpen: false,
 });
 const supabase = useSupabaseClient();
-const toast = useToast();
+const {toastError, toastSuccess} = useAppToast();
 const form = ref();
 const isLoading = ref(false);
 
@@ -136,21 +136,18 @@ const save = async () => {
       .from("transactions")
       .upsert({ ...state.value });
     if (!error) {
-      toast.add({
+      toastSuccess({
         title: "Transaction added",
-        icon: "i-heroicons-check-circle",
       });
       isOpen.value = false;
       emit("saved");
       return;
     }
-    throw error
+    throw error;
   } catch (e) {
-    toast.add({
+    toastError({
       title: "Transaction not saved",
       description: "An error occurred while saving the transaction",
-      icon: "i-heroicons-exclamation-circle",
-      color: "red",
     });
   } finally {
     isLoading.value = false;

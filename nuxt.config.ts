@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   modules: ["@nuxt/ui", "@nuxtjs/color-mode", "@nuxtjs/supabase", 'nuxt-icon'],
   css: ["@/assets/scss/main.scss"],
   supabase: {
-    redirect: false,
+    redirect: true,
   },
 
   app: {

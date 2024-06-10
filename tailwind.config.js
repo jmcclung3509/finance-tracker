@@ -19,6 +19,7 @@ module.exports = {
                 'highlight-blue': "var(--blue)",
                 'highlight-yellow': "var(--yellow)",
                 'highlight-purple': "var(--purple)",
+                'highlight-other': "var(--other)",
               
 
 

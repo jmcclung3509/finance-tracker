@@ -4,7 +4,7 @@ import "dotenv/config";
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
-  process.env.SUPABASE_KEY,
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFrdW1jbnhva2R1eGJocHp6cmVvIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcxNTg4NDkwMywiZXhwIjoyMDMxNDYwOTAzfQ.BBKGehYkr4XOQNYzF-mzx9qnFJIwTx47CjLvCQYOkxU",
   {
     auth: { persistSession: false },
   }
@@ -23,64 +23,76 @@ const categories = [
   "Other",
 ];
 
-async function seedTransactions() {
-  //delete all existing transactions
-  const { error: deleteError } = await supabase
-    .from("transactions")
-    .delete()
-    .gte("id", 0);
-  if (deleteError) {
-    console.error("Error deleting transactions", deleteError);
-    return;
-  }
-  let transactions = [];
-   // Generate transactions for the last two years
-  for (
-    let year = new Date().getFullYear();
-    year > new Date().getFullYear() - 2;
-    year--
-  ) {
-    for (let i = 0; i < 10; i++) {
-      const date = new Date(
-        year,
-        faker.number.int({ min: 0, max: 11 }),
-        faker.number.int({ min: 1, max: 28 })
-      );
+const {
+  data: { users },
+  error,
+} = await supabase.auth.admin.listUsers();
 
-      let type, category;
-      const typeBias = Math.random();
-      if (typeBias < 0.75) {
-        type = "Expense";
-        category = faker.helpers.arrayElement(categories);
-      } else if (typeBias < 0.85) {
-        type = "Income";
-      } else {
-        type = faker.helpers.arrayElement(["Savings", "Investment", "Other"]);
-      }
-      let amount;
-      switch (type) {
-        case "Income":
-          amount = faker.number.int({ min: 200, max: 5000 });
-          break;
-        case "Expense":
-          amount = faker.number.int({ min: 10, max: 2000 });
-          break;
-        case "Savings":
-        case "Investment":
-        case "Other":
-          amount = faker.number.int({ min: 50, max: 500 });
-          break;
 
-        default:
-          amount = 0;
+const usersId = users.map((user) => user.id);
+
+
+  async function seedTransactions() {
+    //delete all existing transactions
+    const { error: deleteError } = await supabase
+      .from("transactions")
+      .delete()
+      .gte("id", 0);
+    if (deleteError) {
+      console.error("Error deleting transactions", deleteError);
+      return;
+    }
+    let transactions = [];
+    for (const user of usersId) {
+    // Generate transactions for the last two years
+    for (
+      let year = new Date().getFullYear();
+      year > new Date().getFullYear() - 2;
+      year--
+    ) {
+      for (let i = 0; i < 10; i++) {
+        const date = new Date(
+          year,
+          faker.number.int({ min: 0, max: 11 }),
+          faker.number.int({ min: 1, max: 28 })
+        );
+
+        let type, category;
+        const typeBias = Math.random();
+        if (typeBias < 0.75) {
+          type = "Expense";
+          category = faker.helpers.arrayElement(categories);
+        } else if (typeBias < 0.85) {
+          type = "Income";
+        } else {
+          type = faker.helpers.arrayElement(["Savings", "Investment", "Other"]);
+        }
+        let amount;
+        switch (type) {
+          case "Income":
+            amount = faker.number.int({ min: 200, max: 5000 });
+            break;
+          case "Expense":
+            amount = faker.number.int({ min: 10, max: 2000 });
+            break;
+          case "Savings":
+          case "Investment":
+          case "Other":
+            amount = faker.number.int({ min: 50, max: 500 });
+            break;
+
+          default:
+            amount = 0;
+        }
+        transactions.push({
+          created_at: date,
+          amount,
+          type,
+          description: faker.lorem.sentence(),
+          category: type === "Expense" ? category : null,
+          user_id: user,
+        });
       }
-      transactions.push({
-        created_at: date,
-        amount,
-        type,
-        description: faker.lorem.sentence(),
-        category: type === "Expense" ? category : null,
-      });
     }
   }
   const { error: insertError } = await supabase

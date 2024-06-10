@@ -111,7 +111,7 @@ const data = reactive({
   isOpen: false,
 });
 const supabase = useSupabaseClient();
-const toast = useToast();
+const {toastError, toastSuccess} = useAppToast();
 const form = ref();
 const isLoading = ref(false);
 
@@ -147,18 +147,16 @@ const update = async () => {
 
     if (error) throw error;
 
-    toast.add({
+    toastSuccess({
       title: "Transaction updated",
-      icon: "i-heroicons-check-circle",
+      description: "Transaction has been updated successfully",
     });
     emit("updated");
     closeModal();
   } catch (e) {
-    toast.add({
+    toastError({
       title: "Transaction not updated",
       description: "An error occurred while updating the transaction",
-      icon: "i-heroicons-exclamation-circle",
-      color: "red",
     });
   } finally {
     isLoading.value = false;

@@ -40,7 +40,7 @@ import { ref } from "vue";
 const success = ref(false);
 const email = ref("");
 const pending = ref(false);
-const toast = useToast();
+const {toastError, toastSuccess} = useAppToast();
 const supabase = useSupabaseClient();
 useRedirectIfAuthenticated();
 
@@ -51,15 +51,13 @@ const handleLogin = async () => {
     const { error } = await supabase.auth.signInWithOtp({
       email: email.value,
       options: {
-        emailRedirectTo: "/confirm",
+        emailRedirectTo: "/",
       },
     });
     if(error){
-        toast.add({
+        toastError({
             title: "Error authenticating",
-            icon: "i-heroicons-information-circle",
             description: error.message,
-            color: "text-highlight-red",
         })
     }
   } finally {
