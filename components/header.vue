@@ -7,7 +7,7 @@
         v-model="selected"
         @click="handleToggle"
       />
-      <UDropdown :items="items" :ui="{ item: { disabled: 'cursor-text select-text' } }" :popper="{ placement: 'bottom-start' }"  v-if='user'>
+      <UDropdown :items="items" :ui="{ item: { disabled: 'cursor-text select-text' } }" :popper="{ placement: 'bottom-start' }"  >
     <UAvatar src="https://avatars.githubusercontent.com/u/739984?v=4" />
 
     <template #account="{ item }">
@@ -16,7 +16,7 @@
           Signed in as
         </p>
         <p class="truncate font-medium text-gray-900 dark:text-white">
-          {{ item.label }}
+          {{user.email }}
         </p>
       </div>
     </template>
@@ -52,12 +52,11 @@ const items = [
   }], [{
     label: 'Settings',
     icon: 'i-heroicons-cog-8-tooth',
-    onClick: ()=> console.log('Link to settings later')
+    onClick: ()=> navigateTo('/settings/profile')
   }, {
     label: 'Sign out',
     icon: 'i-heroicons-arrow-left-on-rectangle',
     onClick: async ()=>{
-      console.log('Sign out')
       await supabase.auth.signOut();
       return navigateTo('/login');
     }

@@ -89,14 +89,13 @@
   </section>
   <section v-if="!isPending" class="transaction">
     <div v-for="(transactionsByDay, date) in byDate" :key="date" class="mb-10">
-      <DailyTransactions :date="date" :transactions="transactionsByDay">{{
-        transactions
-      }}</DailyTransactions>
+      <DailyTransactions :date="date" :transactions="transactionsByDay"/>
+
       <Transaction
         v-for="transaction in transactionsByDay"
         :key="transaction.id"
         :transaction="transaction"
-        @deleted="refreshTransactions()"
+     @deleted="refreshTransactions()"
         @updated="refreshTransactions()"
         :currencyType="data.currencyType"
       />

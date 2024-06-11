@@ -1,4 +1,5 @@
 export const useCurrency = (amount, currencyType) =>{
+ 
     const currency = computed(() => {
     return new Intl.NumberFormat("en-In", {
       style: "currency",
@@ -7,3 +8,4 @@ export const useCurrency = (amount, currencyType) =>{
   })
   return currency
   }
+ 

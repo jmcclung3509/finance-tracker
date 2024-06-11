@@ -176,11 +176,20 @@ const currency = computed(() => {
   );
 });
 
-onMounted(() => {
+const checkOverflow = () => {
   const element = descriptionRef.value;
   if (element) {
     isOverflowing.value = element.scrollWidth > element.clientWidth;
   }
+};
+
+onMounted(() => {
+checkOverflow();
+});
+
+watch(showMore, (newValue, oldValue) => {
+  console.log(`showMore changed from ${oldValue} to ${newValue}`);
+  checkOverflow();
 });
 
 </script>

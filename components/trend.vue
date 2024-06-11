@@ -5,14 +5,21 @@
     </div>
 
     <div class="text-2xl text-default-text font-semibold mb-2">
-      <USkeleton class="h-8 w-full bg-gray-300 rounded-sm" v-if="props.loading" />
-      <div v-else >{{currency}}</div>
+      <USkeleton
+        class="h-8 w-full bg-gray-300 rounded-sm"
+        v-if="props.loading"
+      />
+      <div v-else>{{ currency }}</div>
     </div>
 
     <div class="">
-      <USkeleton class="h-4 w-full bg-gray-300 rounded-sm" v-if="props.loading"/>
+      <USkeleton
+        class="h-4 w-full bg-gray-300 rounded-sm"
+        v-if="props.loading"
+      />
 
       <div v-else class="flex space-x-1 items-center text-sm">
+
         <UIcon
           :name="icon"
           class="w-6 h-6"
@@ -29,7 +36,6 @@
 </template>
 
 <script setup>
-
 const props = defineProps({
   title: String,
   amount: Number,
@@ -38,26 +44,20 @@ const props = defineProps({
   loading: Boolean,
   percent: Number,
   currencyType: {
-    type:String,
-    default:'USD'
-  }
-  
-  
+    type: String,
+    default: "USD",
+  },
 });
 
-
-
 const currency = computed(() => {
-    return new Intl.NumberFormat("en-In", {
-      style: "currency",
-      currency: props.currencyType || "USD",
-    }).format(isRef(props.amount) ? props.amount.value : props.amount);
-  });
-
-
-
+  return new Intl.NumberFormat("en-In", {
+    style: "currency",
+    currency: props.currencyType || "USD",
+  }).format(isRef(props.amount) ? props.amount.value : props.amount);
+});
 
 const trendingUp = computed(() => {
+  console.log(props.amount, props.lastAmount);
   if (props.amount > props.lastAmount) {
     return true;
   } else if (props.amount < props.lastAmount) {
@@ -75,20 +75,21 @@ const icon = computed(() => {
 });
 
 const percent = computed(() => {
-  if (props.amount === 0 || props.lastAmount === 0) {
+  console.log(props.amount, props.lastAmount);
+  if (props.amount === props.lastAmount) {
     return "No change";
   }
 
   const bigger = Math.max(props.amount, props.lastAmount);
   const lower = Math.min(props.amount, props.lastAmount);
-  const ratio = ((bigger - lower) / lower) * 100;
-
+  let ratio;
+  if (props.amount === 0 || props.lastAmount === 0) {
+    ratio = Math.abs((bigger - lower)) ;
+  } else {
+    ratio = ((bigger - lower) / lower) * 100;
+  }
   return Math.ceil(ratio) + "%";
 });
-
-
-
-
 </script>
 
 <style scoped>
@@ -98,11 +99,10 @@ const percent = computed(() => {
 .red {
   @apply text-highlight-red;
 }
-.blue{
+.blue {
   @apply text-highlight-blue;
-
 }
-.purple{
+.purple {
   @apply text-highlight-purple;
 }
 </style>
