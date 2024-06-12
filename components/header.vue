@@ -10,13 +10,13 @@
       <UDropdown :items="items" :ui="{ item: { disabled: 'cursor-text select-text' } }" :popper="{ placement: 'bottom-start' }"  >
     <UAvatar src="https://avatars.githubusercontent.com/u/739984?v=4" />
 
-    <template #account="{ item }">
+    <template #account="{ item}">
       <div class="text-left">
         <p>
           Signed in as
         </p>
         <p class="truncate font-medium text-gray-900 dark:text-white">
-          {{user.email }}
+          {{item.label }}
         </p>
       </div>
     </template>
@@ -52,7 +52,7 @@ const items = [
   }], [{
     label: 'Settings',
     icon: 'i-heroicons-cog-8-tooth',
-    onClick: ()=> navigateTo('/settings/profile')
+    onClick: ()=> navigateTo('/settings')
   }, {
     label: 'Sign out',
     icon: 'i-heroicons-arrow-left-on-rectangle',
@@ -64,6 +64,7 @@ const items = [
 ]
 
 const handleToggle = () => {
+  console.log(selected.value);
  selected.value = !selected.value;
   selected.value ? (colorMode.preference = "dark") : (colorMode.preference = "light");
 };

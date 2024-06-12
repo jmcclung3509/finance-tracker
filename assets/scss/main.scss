@@ -28,15 +28,38 @@
         --default-text: #d1d8ee;
         --bold-text: #fff;
         --muted-text: #cadaf0;
-        --bg-color: #191993;
-        --bg-color-lighter: #1e1e3b;
+        --bg-color: rgb(31 41 55);
+        --bg-color-lighter:  rgb(107 114 128);
+        --bg-color-darker: rgb(17 24 39);
         --green: #36d79d;
-        --red: #d921fc;
+        --red: #FAA3FF;
         --blue:#4cabfc;
-        --purple:  #7e17f6;
+        --purple:  #A592F2;
         --yellow: #fffdc7;
         --teal: #4df3e2;
         --border-color: #475569;
     }
 }
 
+
+.button{
+    background: white;
+    color: var(--default-text);
+    border-radius: 0.375rem;
+}
+.dark{
+    .button{
+        background: var(--bg-color) !important;  
+        color: var(--bold-text) !important;  
+        border: .5px solid var(--bg-color-lighter) !important;
+        
+
+    }
+    div.button{
+        button{
+            background: var(--bg-color) !important;  
+            color: var(--bold-text) !important;  
+          
+        }
+    }
+}

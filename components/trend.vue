@@ -57,7 +57,6 @@ const currency = computed(() => {
 });
 
 const trendingUp = computed(() => {
-  console.log(props.amount, props.lastAmount);
   if (props.amount > props.lastAmount) {
     return true;
   } else if (props.amount < props.lastAmount) {
@@ -75,7 +74,6 @@ const icon = computed(() => {
 });
 
 const percent = computed(() => {
-  console.log(props.amount, props.lastAmount);
   if (props.amount === props.lastAmount) {
     return "No change";
   }

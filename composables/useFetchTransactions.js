@@ -75,15 +75,19 @@ export const useFetchTransactions = (period) => {
           return data;
         }
       );
+  
       return data.value;
     } finally {
       isPending.value = false;
     }
   };
 
+
+
   const refreshTransactions = async () => {
     transactions.value = await fetchTransactions();
   };
+
 
   watch(period, async () => await refreshTransactions());
 

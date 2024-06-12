@@ -28,9 +28,10 @@
       <div class="flex justify-end space-x-2 items-center w-fit">
         <div>{{ currency }}</div>
         <div>
-          <UDropdown :items="items" :popper="{ placement: 'bottom-start' }">
+          <UDropdown :items="items" :popper="{ placement: 'bottom-start' }" class="button">
             <UButton
               color="white"
+              class="button"
               variant="ghost"
               trailing-icon="i-heroicons-chevron-down-20-solid"
               :loading="isLoading"

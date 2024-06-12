@@ -3,9 +3,9 @@
     <h1 class="text-2xl font-bold">Summary</h1>
     <div class="flex justify-content items-center gap-4">
       <!-- <DateRangePicker @update:selectedRange="handleDateRangeChange" /> -->
-      <USelectMenu v-model="selectedView" :options="transactionViewOptions" />
+      <USelectMenu v-model="selectedView" :options="transactionViewOptions" class="button"/>
 
-      <USelectMenu
+      <USelectMenu class="button"
         v-model="selectedCurrency"
         :options="currencyOptions"
         @change="handleCurrencyChange"
@@ -81,7 +81,8 @@
       <UButton
         icon="i-heroicons-plus-circle"
         @click="isOpen = true"
-        color="white"
+color="white"
+class="button"
         label="Add"
         variant="solid"
       />
