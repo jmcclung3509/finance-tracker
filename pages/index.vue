@@ -111,10 +111,12 @@ class="button"
 import { transactionViewOptions, currencyOptions } from "~/constants";
 
 const emit = defineEmits(["currencyChanged"]);
+const user = useSupabaseUser()
+console.log(user.value)
 
 const isOpen = ref(false);
-const selectedView = ref(transactionViewOptions[0]);
-const selectedCurrency = ref(currencyOptions[0]);
+const selectedView = ref(user.value.user_metadata?.transactionView ?? transactionViewOptions[0]);
+const selectedCurrency = ref(user.value.user_metadata?.currencyView ?? currencyOptions[0]);
 
 const data = reactive({
   currencyType: selectedCurrency.value,
