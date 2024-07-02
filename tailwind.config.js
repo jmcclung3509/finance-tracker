@@ -13,6 +13,7 @@ module.exports = {
                 'highlight-text': "var(--highlight-text)",
                 'bold-text': "var(--bold-text)",  
                 'muted-text': "var(--muted-text)",
+                'highlight-pink': "var(--pink)",
                 'highlight-red': "var(--red)",
                 'highlight-green': "var(--green)",  
                 "border-color": "var(--border-color)",

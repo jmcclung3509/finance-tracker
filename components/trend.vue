@@ -103,4 +103,7 @@ const percent = computed(() => {
 .purple {
   @apply text-highlight-purple;
 }
+.pink{
+  @apply text-highlight-pink;
+}
 </style>

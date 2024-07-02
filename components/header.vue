@@ -8,7 +8,7 @@
         @click="handleToggle"
       />
       <UDropdown :items="items" :ui="{ item: { disabled: 'cursor-text select-text' } }" :popper="{ placement: 'bottom-start' }"  >
-    <UAvatar src="https://avatars.githubusercontent.com/u/739984?v=4" />
+    <UAvatar :src="url" />
 
     <template #account="{ item}">
       <div class="text-left">
@@ -40,6 +40,7 @@ const selected = ref(false);
 
 const user = useSupabaseUser();
 const supabase = useSupabaseClient();
+const {url} = useAvatarUrl();
 
 
 

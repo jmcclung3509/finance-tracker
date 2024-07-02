@@ -2,8 +2,13 @@
   <div class="border-b border-border-color py-2 text-default-text">
     <div class="flex justify-between items-center gap-14">
       <div class="flex justify-between items-center w-3/4">
-        <div class="flex items-center gap-4 justify-start w-3/4">
-          <Icon :name="icon" class="icon text-[24px] }" :class="[iconColor]" />
+        <div class="flex items-center gap-4 justify-start w-3/4" >
+          <div class="icon-container relative" @mouseover="showTransactionType=true" @mouseleave="showTransactionType=false">
+            <transition name="fade">
+          <span v-if="showTransactionType === true" class="text-default-text text-xs font-semibold absolute top-10">{{ props.transaction.type }}</span> 
+          </transition>
+          <Icon :name="icon" class="icon text-[24px] }" :class="[iconColor]"/>
+         </div>
           <p class="description-text truncate" ref="descriptionRef"  :class="{ showing: showMore }">
             {{ props.transaction.description }}
           </p>
@@ -50,6 +55,7 @@ const updateModalIsOpen = ref(false);
 const showMore = ref(false);
 const descriptionRef = ref(null);
 const isOverflowing = ref(false);
+const showTransactionType = ref(false);
 
 const props = defineProps({
   transaction: Object,
@@ -122,12 +128,16 @@ const isInvestment = computed(() => {
 const isSavings = computed(() => {
   return props.transaction.type.toLowerCase() === "savings";
 });
+const isOther= computed(() => {
+  return props.transaction.type.toLowerCase() === "other";
+});
 
 const transactionType = computed(() => {
   if (isIncome.value) return "income";
   if (isExpense.value) return "expense";
   if (isInvestment.value) return "investment";
   if (isSavings.value) return "savings";
+  if(isOther.value) return "other";
 });
 
 const icon = computed(() => {
@@ -140,6 +150,8 @@ const icon = computed(() => {
       return "mdi:bank";
     case "savings":
       return "mdi:piggy-bank";
+      case "other":
+        return "mdi:dots-horizontal-circle-outline";
     default:
       return " ";
   }
@@ -150,11 +162,13 @@ const iconColor = computed(() => {
     case "income":
       return "text-highlight-green";
     case "expense":
-      return "text-highlight-red";
+      return "text-highlight-pink";
     case "investment":
       return "text-highlight-blue";
     case "savings":
       return "text-highlight-purple";
+      case "other":
+        return "text-default-text";
     default:
       return " ";
   }

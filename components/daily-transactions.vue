@@ -3,7 +3,7 @@
     class="grid grid-cols-2 border-b border-border-color py-2 text-muted-text"
   >
     <div class="text-bold-text left flex justify-between items-center">
-      {{ date }}
+      {{ formatedDate }}
     </div>
 
     <div class="right flex justify-end items-center" v-if="showTotal">
@@ -42,4 +42,9 @@ const showTotal = computed(() => {
 });
 
 const currency = useCurrency(sum);
+const formatedDate = computed(() => {
+  const splitDate = props.date.split("-");
+
+  return `${splitDate[1]}-${splitDate[2]}-${splitDate[0]}`;
+});
 </script>

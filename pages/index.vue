@@ -3,9 +3,14 @@
     <h1 class="text-2xl font-bold">Summary</h1>
     <div class="flex justify-content items-center gap-4">
       <!-- <DateRangePicker @update:selectedRange="handleDateRangeChange" /> -->
-      <USelectMenu v-model="selectedView" :options="transactionViewOptions" class="button"/>
+      <USelectMenu
+        v-model="selectedView"
+        :options="transactionViewOptions"
+        class="button"
+      />
 
-      <USelectMenu class="button"
+      <USelectMenu
+        class="button"
         v-model="selectedCurrency"
         :options="currencyOptions"
         @change="handleCurrencyChange"
@@ -24,7 +29,7 @@
       :currencyType="data.currencyType"
     />
     <Trend
-      color="red"
+      color="pink"
       title="Expense"
       :amount="expenseTotal"
       :lastAmount="prevExpenseTotal"
@@ -52,23 +57,27 @@
   <section class="flex justify-between mb-10">
     <div class="flex flex-col justify-center items-start space-y-1">
       <h2 class="text-bold-text text-2xl mb-4">Transactions</h2>
-<p class="text-lg"> Summary for the {{ timePeriod }}</p>
-      <ul class="list-none flex flex-wrap justify-start gap-4 items-center ml-1">
+      <p class="text-lg">Summary for the {{ timePeriod }}</p>
+      <ul
+        class="list-none flex flex-wrap justify-start gap-4 items-center ml-1"
+      >
         <li class="text-sm">
           Income:
-         <span class="font-semibold text-bold-text ">{{ incomeCount }}</span>
+          <span class="font-semibold text-bold-text">{{ incomeCount }}</span>
         </li>
         <li class="text-sm">
           Expenses:
-         <span class="font-semibold text-bold-text "> {{ expenseCount }}</span>
+          <span class="font-semibold text-bold-text"> {{ expenseCount }}</span>
         </li>
         <li class="text-sm">
-         Investments:
-          <span class="font-semibold text-bold-text "> {{ investmentCount }}</span>
+          Investments:
+          <span class="font-semibold text-bold-text">
+            {{ investmentCount }}</span
+          >
         </li>
         <li class="text-sm">
-         Savings:
-         <span class="font-semibold text-bold-text ">  {{ savingsCount }}</span>
+          Savings:
+          <span class="font-semibold text-bold-text"> {{ savingsCount }}</span>
         </li>
       </ul>
     </div>
@@ -81,8 +90,8 @@
       <UButton
         icon="i-heroicons-plus-circle"
         @click="isOpen = true"
-color="white"
-class="button"
+        color="white"
+        class="button"
         label="Add"
         variant="solid"
       />
@@ -90,13 +99,13 @@ class="button"
   </section>
   <section v-if="!isPending" class="transaction">
     <div v-for="(transactionsByDay, date) in byDate" :key="date" class="mb-10">
-      <DailyTransactions :date="date" :transactions="transactionsByDay"/>
+      <DailyTransactions :date="date" :transactions="transactionsByDay" />
 
       <Transaction
         v-for="transaction in transactionsByDay"
         :key="transaction.id"
         :transaction="transaction"
-     @deleted="refreshTransactions()"
+        @deleted="refreshTransactions()"
         @updated="refreshTransactions()"
         :currencyType="data.currencyType"
       />
@@ -111,12 +120,16 @@ class="button"
 import { transactionViewOptions, currencyOptions } from "~/constants";
 
 const emit = defineEmits(["currencyChanged"]);
-const user = useSupabaseUser()
-console.log(user.value)
+const user = useSupabaseUser();
 
 const isOpen = ref(false);
-const selectedView = ref(user.value.user_metadata?.transactionView ?? transactionViewOptions[0]);
-const selectedCurrency = ref(user.value.user_metadata?.currencyView ?? currencyOptions[0]);
+
+const selectedView = ref(
+  user.value.user_metadata?.transactionView ?? transactionViewOptions[0]
+);
+const selectedCurrency = ref(
+  user.value.user_metadata?.currencyView ?? currencyOptions[0]
+);
 
 const data = reactive({
   currencyType: selectedCurrency.value,
@@ -140,7 +153,6 @@ const {
   },
 } = useFetchTransactions(current);
 
-
 const {
   refreshTransactions: refreshPreviousTransactions,
   transactions: {
@@ -150,7 +162,6 @@ const {
     savingsTotal: prevSavingsTotal,
   },
 } = useFetchTransactions(previous);
-
 
 await refreshTransactions();
 await refreshPreviousTransactions();
@@ -168,9 +179,9 @@ watch(
 );
 
 const timePeriod = computed(() => {
- switch (selectedView.value) {
-  case "Daily":
-    return "day";
+  switch (selectedView.value) {
+    case "Daily":
+      return "day";
     case "Weekly":
       return "week";
     case "Monthly":
@@ -180,7 +191,5 @@ const timePeriod = computed(() => {
     default:
       return "year";
   }
-
 });
-
 </script>

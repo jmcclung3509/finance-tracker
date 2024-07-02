@@ -14,13 +14,14 @@
         --bg-color-lighter: #fff;
         --green: #60b051;
         --purple: #b464ef;
-        --red: #EA64D9;
+        --pink: #EA64D9;
+        --red: #f03939;
         --blue:#0ea5e9; 
         --teal: #4df3e2;
         --purple:  #8c78ea;
         --yellow: #fffdc7;
-    
         --border-color: #e2e8f0;
+
     }
 
     :root[class~="dark"] {
@@ -32,7 +33,8 @@
         --bg-color-lighter:  rgb(107 114 128);
         --bg-color-darker: rgb(17 24 39);
         --green: #36d79d;
-        --red: #FAA3FF;
+        --pink: #FAA3FF;
+        --red: #f03939;
         --blue:#4cabfc;
         --purple:  #A592F2;
         --yellow: #fffdc7;

@@ -37,7 +37,6 @@ import { z } from "zod";
 
 const supabase = useSupabaseClient();
 const user = useSupabaseUser();
-console.log(user.value.user_metadata);
 const { toastSuccess, toastError } = useAppToast();
 
 import { transactionViewOptions, currencyOptions } from "~/constants";
@@ -56,7 +55,6 @@ const schema = z.object({
 });
 
 const saveSettings = async () => {
-  console.log("click");
   pending.value = true;
   try {
     const { error } = await supabase.auth.updateUser({
@@ -80,5 +78,5 @@ const saveSettings = async () => {
     pending.value = false;
   }
 };
-console.log(state.value);
+
 </script>
