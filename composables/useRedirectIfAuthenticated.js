@@ -1,14 +1,17 @@
-export const useRedirectIfAuthenticated = (url='/') => {
-  console.log(url, 'url ')
+export const useRedirectIfAuthenticated = (url = '/') => {
   const user = useSupabaseUser();
+  const router = useRouter();
+
   watch(
     user,
-    (user) => {
-      if (user) {
-        return navigateTo(url);
+    (newUser) => {
+      console.log('User state changed:', newUser); // Debugging log
+      if (newUser) {
+        router.push(url);
       }
     },
     { immediate: true }
   );
-  return {user}
+
+  return { user };
 };

@@ -45,6 +45,7 @@ const supabase = useSupabaseClient();
 const redirectUrl = useRuntimeConfig().public.baseUrl;
 console.log(redirectUrl, 'redirectUrl')
 
+
 useRedirectIfAuthenticated();
 
 const handleLogin = async () => {
@@ -54,7 +55,7 @@ const handleLogin = async () => {
     const { error } = await supabase.auth.signInWithOtp({
       email: email.value,
       options: {
-        emailRedirectTo: `${redirectUrl}/confirm`,
+        emailRedirectTo: `${redirectUrl}/confirm`
       },
     });
   

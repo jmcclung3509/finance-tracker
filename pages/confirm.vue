@@ -6,6 +6,5 @@
 </template>
 <script setup>
 
-
-useRedirectIfAuthenticated('/')
+useRedirectIfAuthenticated('/');
 </script>
