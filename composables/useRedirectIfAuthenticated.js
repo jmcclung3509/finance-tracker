@@ -1,4 +1,5 @@
 export const useRedirectIfAuthenticated = (url='/') => {
+  console.log(url, 'url ')
   const user = useSupabaseUser();
   watch(
     user,

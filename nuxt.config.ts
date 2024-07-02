@@ -24,7 +24,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      baseUrl: process.env.BASE_URL || "https://finance-tracker-eta-azure.vercel.app/",
+      baseUrl: process.env.BASE_URL || "https://localhost:3000",
     },
   },
 });

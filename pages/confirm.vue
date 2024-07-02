@@ -7,5 +7,5 @@
 <script setup>
 
 
-useRedirectIfAuthenticated()
+useRedirectIfAuthenticated('/')
 </script>

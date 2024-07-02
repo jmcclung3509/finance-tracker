@@ -43,12 +43,13 @@ const pending = ref(false);
 const {toastError, toastSuccess} = useAppToast();
 const supabase = useSupabaseClient();
 const redirectUrl = useRuntimeConfig().public.baseUrl;
+console.log(redirectUrl, 'redirectUrl')
 
 useRedirectIfAuthenticated();
 
 const handleLogin = async () => {
   pending.value = true;
-  success.value = true
+
   try {
     const { error } = await supabase.auth.signInWithOtp({
       email: email.value,
@@ -56,11 +57,18 @@ const handleLogin = async () => {
         emailRedirectTo: `${redirectUrl}/confirm`,
       },
     });
+  
     if(error){
         toastError({
             title: "Error authenticating",
             description: error.message,
         })
+      } else {
+      success.value = true;
+      toastSuccess({
+        title: "Email sent",
+        description: `We have sent an email to ${email.value} with a link to sign in`,
+      });
     }
   } finally {
     pending.value = false;
