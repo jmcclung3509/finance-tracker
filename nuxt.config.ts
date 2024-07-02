@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
 
-  modules: ["@nuxt/ui", "@nuxtjs/color-mode", "@nuxtjs/supabase", 'nuxt-icon'],
+  modules: ["@nuxt/ui", "@nuxtjs/color-mode", "@nuxtjs/supabase", "nuxt-icon"],
   css: ["@/assets/scss/main.scss"],
   supabase: {
     redirect: false,
@@ -12,14 +12,19 @@ export default defineNuxtConfig({
     head: {
       link: [
         {
-          rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400;500;600;700&display=swap'
+          rel: "stylesheet",
+          href: "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400;500;600;700&display=swap",
         },
         {
-          rel: 'stylesheet',
-          href: 'https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css'
-        }
-      ]
-    }
-  }
+          rel: "stylesheet",
+          href: "https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css",
+        },
+      ],
+    },
+  },
+  runtimeConfig: {
+    public: {
+      baseUrl: process.env.BASE_URL || "http://localhost:3000",
+    },
+  },
 });
