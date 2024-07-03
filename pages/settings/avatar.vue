@@ -5,7 +5,7 @@
         label="Current Avatar"
         class="w-full"
         help="This would be blank by default"
-      >
+      >{{ url }}
         <UAvatar :src="url" />
       </UFormGroup>
     </div>
@@ -35,6 +35,9 @@
 const supabase = useSupabaseClient();
 const user = useSupabaseUser();
 const { url } = useAvatarUrl();
+const genericAvatarSrc= "@/assets/images/generic-avatar.png"
+
+
 
 const { toastSuccess, toastError } = useAppToast();
 
@@ -57,8 +60,7 @@ const saveAvatar = async () => {
   try {
     uploading.value = true;
     //Get the current avatar url
-    const currentAvatarUrl = user.value.user_metadata.avatar_url;
-
+    const currentAvatarUrl = user.value.user_metadata.avatar_url 
     //Upload the image to avatar bucket
     const { error } = await supabase.storage
       .from("avatars")
