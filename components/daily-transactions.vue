@@ -1,6 +1,6 @@
 <template>
   <div
-    class="grid grid-cols-2 border-b border-border-color py-2 text-muted-text"
+    class="border-b border-border-color py-2 text-muted-text"
   >
     <div class="text-bold-text left flex justify-between items-center">
       {{ formatedDate }}

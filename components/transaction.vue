@@ -1,21 +1,21 @@
 <template>
-  <div class="border-b border-border-color py-2 text-default-text">
-    <div class="flex justify-between items-center gap-14">
-      <div class="flex justify-between items-center w-3/4">
-        <div class="flex items-center gap-4 justify-start w-3/4" >
+  <div class="border-b border-border-color py-2 text-default-text ">
+    <div class="flex flex-col md:flex-row items-start justify-between md:items-center gap-14 ">
+      <div class="flex justify-between items-center md:w-3/4">
+        <div class="flex items-center gap-4 justify-start  md:w-3/4" >
           <div class="icon-container relative" @mouseover="showTransactionType=true" @mouseleave="showTransactionType=false">
             <transition name="fade">
           <span v-if="showTransactionType === true" class="text-default-text text-xs font-semibold absolute top-10">{{ props.transaction.type }}</span> 
           </transition>
           <Icon :name="icon" class="icon text-[24px] }" :class="[iconColor]"/>
          </div>
-          <p class="description-text truncate" ref="descriptionRef"  :class="{ showing: showMore }">
+          <p class="description-text truncate overflow-hidden w-1/3 md:w-full" ref="descriptionRef"  :class="{ showing: showMore }">
             {{ props.transaction.description }}
           </p>
           <UIcon :name="chevronIcon" @click="showMore = !showMore"  v-if="isOverflowing" />
         </div>
-        <UBadge
-          v-show="
+        <UBadge class="hidden md:block"
+          v-show= "
             props.transaction.category && props.transaction.category !== ''
           "
           color="white"
@@ -30,7 +30,7 @@
         @updated="updated"
       />
 
-      <div class="flex justify-end space-x-2 items-center w-fit">
+      <div class="flex justify-between md:justify-end space-x-2 items-center  w-full md:w-fit">
         <div>{{ currency }}</div>
         <div>
           <UDropdown :items="items" :popper="{ placement: 'bottom-start' }" class="button">
@@ -49,6 +49,9 @@
 </template>
 
 <script setup>
+console.log(useScreensize().value )
+const {isMobile, size}= useScreensize();
+console.log( isMobile.value, size.value)
 const toast = useToast();
 const supabase = useSupabaseClient();
 const updateModalIsOpen = ref(false);
@@ -215,6 +218,7 @@ watch(showMore, (newValue, oldValue) => {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 .showing {
   overflow: visible;
   white-space: wrap;

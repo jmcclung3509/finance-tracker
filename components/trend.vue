@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div  class="py-7 md:py-0">
     <div class="">
       <h2 class="text-2xl" :class="[color]">{{ title }}</h2>
     </div>

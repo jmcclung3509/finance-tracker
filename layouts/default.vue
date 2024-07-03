@@ -1,5 +1,5 @@
 <template>
-    <div class="container mx-auto max-w-4xl">
+    <div class="container mx-auto w-full lg:max-w-4xl">
         <Header></Header>
         <main class="my-10">
             <slot />
@@ -25,6 +25,7 @@ useHead({
 body{
     font-family: 'Inter', sans-serif;
    margin: 2rem;
+
 }
 body{
     @apply bg-bg-color text-default-text;
