@@ -35,7 +35,7 @@
 const supabase = useSupabaseClient();
 const user = useSupabaseUser();
 const { url } = useAvatarUrl();
-const genericAvatarSrc= "@/assets/images/generic-avatar.png"
+
 
 
 
