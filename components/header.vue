@@ -36,7 +36,7 @@
 </template>
 
 <script setup>
-const selected = ref(false);
+const selected = ref(true);
 
 const user = useSupabaseUser();
 const supabase = useSupabaseClient();
@@ -65,12 +65,13 @@ const items = [
 ]
 
 const handleToggle = () => {
-  console.log(selected.value);
  selected.value = !selected.value;
   selected.value ? (colorMode.preference = "dark") : (colorMode.preference = "light");
 };
 
 const colorMode = useColorMode();
-
+onMounted(()=>{
+  selected.value = colorMode.preference === 'dark';
+})
 
 </script>

@@ -4,7 +4,7 @@
       <UFormGroup
         label="Current Avatar"
         class="w-full"
-        help="This would be blank by default"
+       
       >
         <UAvatar :src="url" />
       </UFormGroup>
